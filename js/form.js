@@ -4,21 +4,19 @@ export function initForm() {
 
     if (!typeSelect || !inputArea) return;
 
-    console.log("Form ready ✅");
+    console.log("Form ready");
 
     typeSelect.addEventListener("change", function () {
         const type = this.value;
 
         console.log("Bạn chọn:", type);
 
-        // reset trước
         inputArea.innerHTML = "";
 
-        // 👇 HIỆN INPUT BÊN DƯỚI
         if (type === "text") {
             const textarea = document.createElement("textarea");
             textarea.id = "content";
-            textarea.placeholder = "Nhập đoạn văn...";
+            textarea.placeholder = "Nhập văn bản...";
             textarea.rows = 4;
 
             inputArea.appendChild(textarea);
@@ -33,12 +31,36 @@ export function initForm() {
         }
 
         else if (type === "image") {
-            const fileInput = document.createElement("input");
-            fileInput.type = "file";
-            fileInput.id = "imageFile";
-            fileInput.accept = "image/*";
+            inputArea.innerHTML = `
+                <label class="upload-box">
+                    Chọn ảnh
+                    <input type="file" id="imageFile" accept="image/*">
+                </label>
 
-            inputArea.appendChild(fileInput);
+                <p id="fileName">Chưa chọn ảnh</p>
+                <div id="preview"></div>
+            `;
+
+            const fileInput = document.getElementById("imageFile");
+            const fileName = document.getElementById("fileName");
+            const preview = document.getElementById("preview");
+
+            fileInput.addEventListener("change", () => {
+                preview.innerHTML = ""; // ❗ xoá ảnh cũ (rất quan trọng)
+
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+
+                    fileName.innerText = file.name;
+
+                    const img = document.createElement("img");
+                    img.src = URL.createObjectURL(file);
+
+                    img.classList.add("preview-img");
+
+                    preview.appendChild(img);
+                }
+            });
         }
     });
 }

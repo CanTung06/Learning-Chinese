@@ -5,9 +5,8 @@ import { initForm } from "./form.js";
 
 window.addTask = addTask;
 
-// 🔥 CHẠY FORM NGAY - KHÔNG CHỜ AUTH
 window.addEventListener("load", () => {
-    console.log("Page loaded ✅");
+    console.log("Page loaded");
 
     const typeEl = document.getElementById("type");
 
@@ -17,9 +16,8 @@ window.addEventListener("load", () => {
     }
 });
 
-// 🔐 AUTH chạy riêng
 checkAuth(() => {
-    console.log("Auth OK ✅");
+    console.log("Auth OK");
 
     if (document.getElementById("tasks")) {
         loadTasks(renderLeaderboard);

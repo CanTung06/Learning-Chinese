@@ -19,7 +19,7 @@ function parseDate(dateStr) {
     return new Date(year, month - 1, day);
 }
 
-window.addTask = async function () {
+export async function addTask() {
     const type = document.getElementById("type").value;
     const user = document.getElementById("user").value;
     const deadlineStr = document.getElementById("deadline").value;
@@ -92,7 +92,7 @@ export function loadTasks(renderLeaderboard) {
             const deadlineDate = new Date(task.deadline);
             const expired = deadlineDate < now;
 
-            // 🔥 AUTO SET FAILED
+            // AUTO SET FAILED
             if (expired && !task.completed && !task.failed) {
                 updateDoc(doc(db, "tasks", id), {
                     failed: true
@@ -112,11 +112,11 @@ export function loadTasks(renderLeaderboard) {
 
             // TRẠNG THÁI
             if (task.completed) {
-                div.innerHTML += `<br>✅ Hoàn thành`;
+                div.innerHTML += `<br>Hoàn thành`;
                 div.classList.add("done");
             }
             else if (task.failed || expired) {
-                div.innerHTML += `<br>❌ Không hoàn thành`;
+                div.innerHTML += `<br>Không hoàn thành`;
                 div.classList.add("expired");
             }
             else {
