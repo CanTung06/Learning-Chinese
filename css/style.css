@@ -1,0 +1,51 @@
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #f4f6f8;
+}
+
+nav {
+    background: #2c7be5;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+nav a, nav button {
+    color: white;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.left, .right {
+    flex: 1;
+}
+
+.box {
+    width: 400px;
+    margin: auto;
+}
+
+input, select, button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+
+.task {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 10px;
+}

@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Add Task</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,18 +14,19 @@
     <button onclick="logout()">Đăng xuất</button>
 </nav>
 
-<h1>Dashboard</h1>
+<h1>Thêm bài</h1>
 
-<div class="container">
-    <div class="left">
-        <h2>📋 Danh sách</h2>
-        <div id="tasks"></div>
-    </div>
+<div class="box">
+    <input id="content" placeholder="Nội dung">
 
-    <div class="right">
-        <h2>🏆 Leaderboard</h2>
-        <div id="leaderboard"></div>
-    </div>
+    <select id="user">
+        <option value="me">Tôi</option>
+        <option value="friend">Bạn</option>
+    </select>
+
+    <input type="date" id="deadline">
+
+    <button onclick="addTask()">Add</button>
 </div>
 
 <script type="module" src="js/main.js"></script>
