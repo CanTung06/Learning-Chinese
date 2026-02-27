@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Learning Chinese</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Learning Chinese</h1>
+
+<!-- LOGIN -->
+<div id="loginBox">
+    <h2>Login</h2>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+    <button onclick="logout()">Logout</button>
+
+    <h2>➕ Thêm bài</h2>
+    <input id="content" placeholder="Nội dung">
+    
+    <select id="user">
+        <option value="me">Tôi</option>
+        <option value="friend">Bạn</option>
+    </select>
+
+    <input type="date" id="deadline">
+    <button onclick="addTask()">Add</button>
+
+    <h2>📋 Danh sách</h2>
+    <div id="tasks"></div>
+</div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
