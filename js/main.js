@@ -5,20 +5,23 @@ import { initForm } from "./form.js";
 
 window.addTask = addTask;
 
-checkAuth(() => {
+// 🔥 CHẠY FORM NGAY - KHÔNG CHỜ AUTH
+window.addEventListener("load", () => {
+    console.log("Page loaded ✅");
 
-    console.log("Đã đăng nhập ✅");
+    const typeEl = document.getElementById("type");
 
-    // nếu là trang thêm bài → bật form dynamic
-    if (document.getElementById("type")) {
+    if (typeEl) {
         console.log("Init form...");
         initForm();
     }
+});
 
-    // nếu là trang chủ → load tasks + leaderboard
+// 🔐 AUTH chạy riêng
+checkAuth(() => {
+    console.log("Auth OK ✅");
+
     if (document.getElementById("tasks")) {
-        console.log("Load tasks...");
         loadTasks(renderLeaderboard);
     }
-
 });

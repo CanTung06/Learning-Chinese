@@ -4,28 +4,41 @@ export function initForm() {
 
     if (!typeSelect || !inputArea) return;
 
-    typeSelect.addEventListener("change", () => {
-        const type = typeSelect.value;
+    console.log("Form ready ✅");
+
+    typeSelect.addEventListener("change", function () {
+        const type = this.value;
+
+        console.log("Bạn chọn:", type);
 
         // reset trước
         inputArea.innerHTML = "";
 
+        // 👇 HIỆN INPUT BÊN DƯỚI
         if (type === "text") {
-            inputArea.innerHTML = `
-                <textarea id="content" placeholder="Nhập đoạn văn..." rows="4"></textarea>
-            `;
+            const textarea = document.createElement("textarea");
+            textarea.id = "content";
+            textarea.placeholder = "Nhập đoạn văn...";
+            textarea.rows = 4;
+
+            inputArea.appendChild(textarea);
         }
 
         else if (type === "link") {
-            inputArea.innerHTML = `
-                <input id="content" placeholder="Dán link vào đây">
-            `;
+            const input = document.createElement("input");
+            input.id = "content";
+            input.placeholder = "Nhập link...";
+
+            inputArea.appendChild(input);
         }
 
         else if (type === "image") {
-            inputArea.innerHTML = `
-                <input type="file" id="imageFile" accept="image/*">
-            `;
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.id = "imageFile";
+            fileInput.accept = "image/*";
+
+            inputArea.appendChild(fileInput);
         }
     });
 }
