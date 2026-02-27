@@ -7,20 +7,70 @@ import {
     doc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-export async function addTask() {
-    const content = document.getElementById("content").value;
+// validate ngày dd/mm/yyyy
+function isValidDate(dateStr) {
+    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    return regex.test(dateStr);
+}
+
+// convert dd/mm/yyyy → Date
+function parseDate(dateStr) {
+    const [day, month, year] = dateStr.split("/");
+    return new Date(year, month - 1, day);
+}
+
+window.addTask = async function () {
+    const type = document.getElementById("type").value;
     const user = document.getElementById("user").value;
-    const deadline = document.getElementById("deadline").value;
+    const deadlineStr = document.getElementById("deadline").value;
+
+    if (!type || !user || !deadlineStr) {
+        alert("Vui lòng nhập đầy đủ!");
+        return;
+    }
+
+    if (!isValidDate(deadlineStr)) {
+        alert("Nhập đúng định dạng dd/mm/yyyy");
+        return;
+    }
+
+    const deadline = parseDate(deadlineStr);
+
+    let content = "";
+    let imageUrl = "";
+
+    if (type === "image") {
+        const file = document.getElementById("imageFile")?.files[0];
+
+        if (!file) {
+            alert("Chọn ảnh!");
+            return;
+        }
+
+        imageUrl = URL.createObjectURL(file);
+    } else {
+        content = document.getElementById("content")?.value;
+
+        if (!content) {
+            alert("Nhập nội dung!");
+            return;
+        }
+    }
 
     await addDoc(collection(db, "tasks"), {
+        type,
         content,
+        imageUrl,
         assignedTo: user,
         deadline,
         completed: false,
         createdAt: new Date()
     });
-}
 
+    alert("Đã thêm!");
+};
+
+// LOAD TASK
 export function loadTasks(renderLeaderboard) {
     const container = document.getElementById("tasks");
 
@@ -38,14 +88,38 @@ export function loadTasks(renderLeaderboard) {
             const div = document.createElement("div");
             div.className = "task";
 
-            const expired = new Date(task.deadline) < now;
+            const now = new Date();
+            const deadlineDate = new Date(task.deadline);
+            const expired = deadlineDate < now;
+
+            // 🔥 AUTO SET FAILED
+            if (expired && !task.completed && !task.failed) {
+                updateDoc(doc(db, "tasks", id), {
+                    failed: true
+                });
+            }
 
             div.innerHTML = `
-                <b>${task.content}</b><br>
-                ${task.assignedTo} - ${task.deadline}
+                <b>${task.assignedTo}</b> - ${deadlineDate.toLocaleDateString()}<br>
             `;
 
-            if (!task.completed && !expired) {
+            // HIỂN THỊ NỘI DUNG
+            if (task.type === "image") {
+                div.innerHTML += `<img src="${task.imageUrl}" width="120">`;
+            } else {
+                div.innerHTML += `${task.content}`;
+            }
+
+            // TRẠNG THÁI
+            if (task.completed) {
+                div.innerHTML += `<br>✅ Hoàn thành`;
+                div.classList.add("done");
+            }
+            else if (task.failed || expired) {
+                div.innerHTML += `<br>❌ Không hoàn thành`;
+                div.classList.add("expired");
+            }
+            else {
                 const btn = document.createElement("button");
                 btn.innerText = "✔️";
                 btn.onclick = () => completeTask(id);

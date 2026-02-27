@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Add Task</title>
+    <title>Giao Bài</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,19 +14,40 @@
     <button onclick="logout()">Đăng xuất</button>
 </nav>
 
-<h1>Thêm bài</h1>
+<h1>Giao bài</h1>
 
 <div class="box">
-    <input id="content" placeholder="Nội dung">
 
-    <select id="user">
+    <!-- CHỌN LOẠI -->
+    <label>Loại bài</label>
+    <select id="type" required>
+        <option value="" disabled selected>--Chọn--</option>
+        <option value="text">Văn bản</option>
+        <option value="link">Link</option>
+        <option value="image">Ảnh</option>
+    </select>
+
+    <!-- INPUT DYNAMIC -->
+    <div id="inputArea"></div>
+
+    <!-- CHỌN NGƯỜI -->
+    <label>Giao cho</label>
+    <select id="user" required>
+        <option value="" disabled selected>--Chọn người làm--</option>
         <option value="me">Cấn Xuân Tùng</option>
         <option value="friend">Vương Khánh Ly</option>
     </select>
 
-    <input type="date" id="deadline">
+    <!-- NGÀY -->
+    <label>Ngày hết hạn</label>
+    <input 
+        type="text" 
+        id="deadline" 
+        placeholder="dd/mm/yyyy"
+    >
 
-    <button onclick="addTask()">Add</button>
+    <button onclick="addTask()">Giao</button>
+
 </div>
 
 <script type="module" src="js/main.js"></script>
