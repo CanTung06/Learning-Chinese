@@ -1,5 +1,9 @@
 import { auth, db } from "./firebase.js";
-import { updatePassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+    updatePassword,
+    EmailAuthProvider,
+    reauthenticateWithCredential
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import {
     signInWithEmailAndPassword,
@@ -107,19 +111,53 @@ async function completeTask(id) {
     });
 }
 
+// CHANGE PASSWORD
 window.changePassword = async function () {
     const user = auth.currentUser;
-    const newPassword = document.getElementById("newPassword").value;
 
-    if (!newPassword) {
-        alert("Nhập mật khẩu mới!");
+    const currentPassword = document.getElementById("currentPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const message = document.getElementById("passwordMessage");
+
+    // reset message
+    message.innerText = "";
+
+    // validate
+    if (!currentPassword || !newPassword) {
+        message.innerText = "❌ Vui lòng nhập đầy đủ thông tin";
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        message.innerText = "❌ Mật khẩu phải ≥ 6 ký tự";
         return;
     }
 
     try {
+        // xác thực lại
+        const credential = EmailAuthProvider.credential(
+            user.email,
+            currentPassword
+        );
+
+        await reauthenticateWithCredential(user, credential);
+
+        // đổi mật khẩu
         await updatePassword(user, newPassword);
-        alert("Đổi mật khẩu thành công!");
+
+        message.innerText = "✅ Đổi mật khẩu thành công!";
+
+        // clear input
+        document.getElementById("currentPassword").value = "";
+        document.getElementById("newPassword").value = "";
+
     } catch (e) {
-        alert("Lỗi: " + e.message);
+        console.log(e);
+
+        if (e.code === "auth/wrong-password") {
+            message.innerText = "❌ Sai mật khẩu hiện tại";
+        } else {
+            message.innerText = "❌ Lỗi: " + e.message;
+        }
     }
 };
