@@ -169,28 +169,47 @@ window.changePassword = async function () {
 };
 
 // LEADERBOARD
-function renderLeaderboard(tasks) {
-    let me = 0;
-    let friend = 0;
+function calculateStreak(tasks, user) {
+    const doneTasks = tasks
+        .filter(t => t.assignedTo === user && t.completed && t.completedAt)
+        .sort((a, b) => new Date(a.completedAt) - new Date(b.completedAt));
 
-    tasks.forEach(t => {
-        if (t.completed) {
-            if (t.assignedTo === "me") me++;
-            if (t.assignedTo === "friend") friend++;
+    let streak = 0;
+    let lastDate = null;
+
+    doneTasks.forEach(t => {
+        const date = new Date(t.completedAt).toDateString();
+
+        if (!lastDate) {
+            streak = 1;
+        } else {
+            const diff = (new Date(date) - new Date(lastDate)) / (1000 * 3600 * 24);
+
+            if (diff === 1) streak++;
+            else if (diff > 1) streak = 1;
         }
+
+        lastDate = date;
     });
+
+    return streak;
+}
+
+function renderLeaderboard(tasks) {
+    const meStreak = calculateStreak(tasks, "me");
+    const friendStreak = calculateStreak(tasks, "friend");
 
     const container = document.getElementById("leaderboard");
 
     container.innerHTML = `
-        <div class="user-score ${me > friend ? "winner" : ""}">
-            <span>👤 Tôi</span>
-            <span>${me} ✅</span>
+        <div class="user-score ${meStreak > friendStreak ? "winner" : ""}">
+            <span>Cấn Xuân Tùng</span>
+            <span>🔥 ${meStreak}</span>
         </div>
 
-        <div class="user-score ${friend > me ? "winner" : ""}">
-            <span>👤 Bạn</span>
-            <span>${friend} ✅</span>
+        <div class="user-score ${friendStreak > meStreak ? "winner" : ""}">
+            <span>Vương Khánh Ly</span>
+            <span>🔥 ${friendStreak}</span>
         </div>
     `;
 }
