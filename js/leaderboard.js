@@ -14,7 +14,7 @@ export function renderLeaderboard(tasks) {
     if (!el) return;
 
     el.innerHTML = `
-        <div>👤 Tôi: ${me}</div>
-        <div>👤 Bạn: ${friend}</div>
+        <div>Cấn Xuân Tùng: ${me}</div>
+        <div>Vương Khánh Ly: ${friend}</div>
     `;
 }
