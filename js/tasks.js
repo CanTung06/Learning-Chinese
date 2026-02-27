@@ -4,7 +4,8 @@ import {
     addDoc,
     onSnapshot,
     updateDoc,
-    doc
+    doc,
+    deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // validate ngày dd/mm/yyyy
@@ -68,6 +69,14 @@ export async function addTask() {
     });
 
     alert("Đã thêm!");
+
+    // 🔥 RESET FORM
+    document.getElementById("type").selectedIndex = 0;
+    document.getElementById("user").selectedIndex = 0;
+    document.getElementById("deadline").value = "";
+
+    // xoá input động (text / link / image)
+    document.getElementById("inputArea").innerHTML = "";
 };
 
 // LOAD TASK
@@ -125,6 +134,20 @@ export function loadTasks(renderLeaderboard) {
                 btn.onclick = () => completeTask(id);
                 div.appendChild(btn);
             }
+            // 🔥 NÚT XOÁ
+            const deleteBtn = document.createElement("span");
+            deleteBtn.innerText = "🗑 Xoá";
+            deleteBtn.className = "delete-btn";
+
+            deleteBtn.onclick = async () => {
+                const confirmDelete = confirm("Bạn có muốn xoá bài này không?");
+                
+                if (confirmDelete) {
+                    await deleteDoc(doc(db, "tasks", id));
+                }
+            };
+
+            div.appendChild(deleteBtn);
 
             container.appendChild(div);
         });

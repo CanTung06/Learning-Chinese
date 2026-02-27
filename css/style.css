@@ -48,6 +48,7 @@ input, select, button {
     border: 1px solid #ddd;
     padding: 10px;
     margin-top: 10px;
+    position: relative;
 }
 
 select:invalid {
@@ -114,4 +115,18 @@ textarea {
     margin-top: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 🔥 nút xoá */
+.delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    color: red;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    text-decoration: underline;
 }
