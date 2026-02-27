@@ -66,17 +66,25 @@ function loadTasks() {
     const container = document.getElementById("tasks");
 
     onSnapshot(collection(db, "tasks"), snapshot => {
+        const container = document.getElementById("tasks");
         container.innerHTML = "";
+
         const now = new Date();
+        let allTasks = [];
 
         snapshot.forEach(docSnap => {
             const task = docSnap.data();
             const id = docSnap.id;
 
+            allTasks.push(task);
+
             const div = document.createElement("div");
             div.className = "task";
 
             const expired = new Date(task.deadline) < now;
+
+            if (task.completed) div.classList.add("done");
+            if (expired && !task.completed) div.classList.add("expired");
 
             div.innerHTML = `
                 <b>${task.content}</b><br>
@@ -92,12 +100,10 @@ function loadTasks() {
                 div.appendChild(btn);
             }
 
-            if (expired && !task.completed) {
-                div.innerHTML += "<br>⚠️ Quá hạn";
-            }
-
             container.appendChild(div);
         });
+
+        renderLeaderboard(allTasks);
     });
 }
 
@@ -161,3 +167,30 @@ window.changePassword = async function () {
         }
     }
 };
+
+// LEADERBOARD
+function renderLeaderboard(tasks) {
+    let me = 0;
+    let friend = 0;
+
+    tasks.forEach(t => {
+        if (t.completed) {
+            if (t.assignedTo === "me") me++;
+            if (t.assignedTo === "friend") friend++;
+        }
+    });
+
+    const container = document.getElementById("leaderboard");
+
+    container.innerHTML = `
+        <div class="user-score ${me > friend ? "winner" : ""}">
+            <span>👤 Tôi</span>
+            <span>${me} ✅</span>
+        </div>
+
+        <div class="user-score ${friend > me ? "winner" : ""}">
+            <span>👤 Bạn</span>
+            <span>${friend} ✅</span>
+        </div>
+    `;
+}

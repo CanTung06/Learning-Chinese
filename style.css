@@ -1,41 +1,83 @@
 body {
     font-family: Arial;
-    background: #f4f6f8;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     padding: 20px;
+    color: #333;
 }
 
 h1 {
     text-align: center;
+    color: white;
 }
 
 #loginBox, #app {
     background: white;
     padding: 20px;
-    width: 500px;
-    margin: auto;
-    border-radius: 10px;
+    width: 600px;
+    margin: 20px auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 input, select, button {
     display: block;
     width: 100%;
     margin: 10px 0;
-    padding: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
 button {
-    background: #2c7be5;
+    background: #667eea;
     color: white;
     border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #5a67d8;
 }
 
 .task {
-    border: 1px solid #ddd;
+    border-left: 5px solid #667eea;
     padding: 10px;
     margin-top: 10px;
+    border-radius: 8px;
+    background: #f9f9ff;
+}
+
+.task.done {
+    border-left: 5px solid #00c853;
+    background: #e8f5e9;
+}
+
+.task.expired {
+    border-left: 5px solid #ff5252;
+    background: #ffebee;
 }
 
 #passwordMessage {
-    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* LEADERBOARD */
+#leaderboard {
+    margin-top: 20px;
+}
+
+.user-score {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: #f1f3ff;
+    margin-top: 5px;
+    border-radius: 8px;
+}
+
+.winner {
+    background: gold;
     font-weight: bold;
 }
