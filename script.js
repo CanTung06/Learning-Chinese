@@ -1,4 +1,5 @@
 import { auth, db } from "./firebase.js";
+import { updatePassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import {
     signInWithEmailAndPassword,
@@ -105,3 +106,20 @@ async function completeTask(id) {
         completedAt: new Date()
     });
 }
+
+window.changePassword = async function () {
+    const user = auth.currentUser;
+    const newPassword = document.getElementById("newPassword").value;
+
+    if (!newPassword) {
+        alert("Nhập mật khẩu mới!");
+        return;
+    }
+
+    try {
+        await updatePassword(user, newPassword);
+        alert("Đổi mật khẩu thành công!");
+    } catch (e) {
+        alert("Lỗi: " + e.message);
+    }
+};
