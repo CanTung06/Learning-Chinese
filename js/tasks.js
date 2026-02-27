@@ -98,7 +98,11 @@ export function loadTasks(renderLeaderboard) {
             div.className = "task";
 
             const now = new Date();
-            const deadlineDate = new Date(task.deadline);
+            function parseDate(dateStr) {
+                const [day, month, year] = dateStr.split("/");
+                return new Date(year, month - 1, day);
+            }
+            const deadlineDate = task.deadline.toDate();
             const expired = deadlineDate < now;
 
             // AUTO SET FAILED
@@ -108,8 +112,15 @@ export function loadTasks(renderLeaderboard) {
                 });
             }
 
+            const nameMap = {
+                me: "Cấn Xuân Tùng",
+                friend: "Vương Khánh Ly"
+            };
+
+            const displayName = nameMap[task.assignedTo] || task.assignedTo;
+
             div.innerHTML = `
-                <b>${task.assignedTo}</b> - ${deadlineDate.toLocaleDateString()}<br>
+                <b>${displayName}</b> - ${deadlineDate.toLocaleDateString("vi-VN")}<br>
             `;
 
             // HIỂN THỊ NỘI DUNG
