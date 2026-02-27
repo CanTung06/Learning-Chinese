@@ -22,7 +22,8 @@ window.login = async function () {
     try {
         await signInWithEmailAndPassword(auth, email, password);
     } catch (e) {
-        alert("Sai tài khoản!");
+        console.log(e);
+        alert(e.message);
     }
 };
 
