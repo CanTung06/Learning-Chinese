@@ -127,7 +127,11 @@ export function loadTasks(renderLeaderboard) {
             if (task.type === "image") {
                 div.innerHTML += `<img src="${task.imageUrl}" width="120">`;
             } else {
-                div.innerHTML += `${task.content}`;
+                if (task.type === "link") {
+                    div.innerHTML += `<a href="${task.content}" target="_blank">${task.content}</a>`;
+                } else {
+                    div.innerHTML += `${task.content}`;
+                }
             }
 
             // TRẠNG THÁI
@@ -158,7 +162,25 @@ export function loadTasks(renderLeaderboard) {
                 }
             };
 
+            // NÚT XOÁ
             div.appendChild(deleteBtn);
+
+            // NÚT SỬA
+            const editBtn = document.createElement("span");
+            editBtn.innerText = "✏️ Sửa";
+            editBtn.className = "edit-btn";
+
+            editBtn.onclick = async () => {
+                const newContent = prompt("Sửa nội dung:", task.content);
+                
+                if (newContent !== null && newContent !== "") {
+                    await updateDoc(doc(db, "tasks", id), {
+                        content: newContent
+                    });
+                }
+            };
+
+            div.appendChild(editBtn);
 
             container.appendChild(div);
         });

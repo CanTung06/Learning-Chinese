@@ -130,3 +130,17 @@ textarea {
 .delete-btn:hover {
     text-decoration: underline;
 }
+
+/* Nút sửa */
+.edit-btn {
+    position: absolute;
+    top: 8px;
+    right: 70px;
+    color: blue;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    text-decoration: underline;
+}
