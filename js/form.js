@@ -75,6 +75,8 @@ window.addEventListener("load", async () => {
 
     if (!editId) return;
 
+    document.getElementById("formTitle").innerText = "Chỉnh sửa bài giao";
+
     const snap = await getDoc(doc(db, "tasks", editId));
     const task = snap.data();
 
@@ -99,7 +101,7 @@ window.addEventListener("load", async () => {
     }, 100);
 
     // 🔥 đổi nút thành Cập nhật
-    const btn = document.querySelector("button");
+    const btn = document.getElementById("submitBtn");
     btn.innerText = "Cập nhật";
 
     // 🔥 override hành vi nút
