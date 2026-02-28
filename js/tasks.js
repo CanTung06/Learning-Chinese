@@ -170,14 +170,8 @@ export function loadTasks(renderLeaderboard) {
             editBtn.innerText = "✏️ Sửa";
             editBtn.className = "edit-btn";
 
-            editBtn.onclick = async () => {
-                const newContent = prompt("Sửa nội dung:", task.content);
-                
-                if (newContent !== null && newContent !== "") {
-                    await updateDoc(doc(db, "tasks", id), {
-                        content: newContent
-                    });
-                }
+            editBtn.onclick = () => {
+                window.location.href = `add.html?id=${id}`;
             };
 
             div.appendChild(editBtn);

@@ -1,3 +1,6 @@
+import { db } from "./firebase.js";
+import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 export function initForm() {
     const typeSelect = document.getElementById("type");
     const inputArea = document.getElementById("inputArea");
@@ -64,3 +67,73 @@ export function initForm() {
         }
     });
 }
+
+// 🔥 CHECK EDIT MODE
+window.addEventListener("load", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get("id");
+
+    if (!editId) return;
+
+    const snap = await getDoc(doc(db, "tasks", editId));
+    const task = snap.data();
+
+    // set giá trị
+    document.getElementById("type").value = task.type;
+    document.getElementById("user").value = task.assignedTo;
+
+    // convert date → dd/mm/yyyy
+    const d = task.deadline.toDate();
+    const dateStr = `${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")}/${d.getFullYear()}`;
+    document.getElementById("deadline").value = dateStr;
+
+    // render lại input
+    const event = new Event("change");
+    document.getElementById("type").dispatchEvent(event);
+
+    // đợi render xong rồi set content
+    setTimeout(() => {
+        if (task.type === "text" || task.type === "link") {
+            document.getElementById("content").value = task.content;
+        }
+    }, 100);
+
+    // 🔥 đổi nút thành Cập nhật
+    const btn = document.querySelector("button");
+    btn.innerText = "Cập nhật";
+
+    // 🔥 override hành vi nút
+    btn.onclick = async () => {
+        const type = document.getElementById("type").value;
+        const user = document.getElementById("user").value;
+        const deadlineStr = document.getElementById("deadline").value;
+
+        let content = "";
+        let imageUrl = task.imageUrl;
+
+        if (type === "image") {
+            const file = document.getElementById("imageFile")?.files[0];
+            if (file) {
+                imageUrl = URL.createObjectURL(file);
+            }
+        } else {
+            content = document.getElementById("content")?.value;
+        }
+
+        await updateDoc(doc(db, "tasks", editId), {
+            type,
+            assignedTo: user,
+            deadline: new Date(
+                deadlineStr.split("/")[2],
+                deadlineStr.split("/")[1] - 1,
+                deadlineStr.split("/")[0]
+            ),
+            content,
+            imageUrl
+        });
+
+        alert("Đã cập nhật!");
+
+        window.location.href = "index.html";
+    };
+});
