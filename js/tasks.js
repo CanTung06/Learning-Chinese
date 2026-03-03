@@ -92,17 +92,8 @@ export function loadTasks(renderLeaderboard) {
             const task = docSnap.data();
             const id = docSnap.id;
 
-            allTasks.push(task);
-
-            const div = document.createElement("div");
-            div.className = "task";
-
-            const now = new Date();
-            function parseDate(dateStr) {
-                const [day, month, year] = dateStr.split("/");
-                return new Date(year, month - 1, day);
-            }
             const deadlineDate = task.deadline.toDate();
+            const now = new Date();
             const expired = deadlineDate < now;
 
             // AUTO SET FAILED
@@ -111,6 +102,16 @@ export function loadTasks(renderLeaderboard) {
                     failed: true
                 });
             }
+
+            // ❗ Chỉ hiển thị task chưa hoàn thành và chưa fail
+            if (task.completed || task.failed || expired) {
+                return;
+            }
+
+            allTasks.push(task);
+
+            const div = document.createElement("div");
+            div.className = "task";
 
             const nameMap = {
                 me: "Cấn Xuân Tùng",
@@ -123,49 +124,34 @@ export function loadTasks(renderLeaderboard) {
                 <b>${displayName}</b> - ${deadlineDate.toLocaleDateString("vi-VN")}<br>
             `;
 
-            // HIỂN THỊ NỘI DUNG
+            // Nội dung
             if (task.type === "image") {
                 div.innerHTML += `<img src="${task.imageUrl}" width="120">`;
+            } else if (task.type === "link") {
+                div.innerHTML += `<a href="${task.content}" target="_blank">${task.content}</a>`;
             } else {
-                if (task.type === "link") {
-                    div.innerHTML += `<a href="${task.content}" target="_blank">${task.content}</a>`;
-                } else {
-                    div.innerHTML += `${task.content}`;
-                }
+                div.innerHTML += `${task.content}`;
             }
 
-            // TRẠNG THÁI
-            if (task.completed) {
-                div.innerHTML += `<br>Hoàn thành`;
-                div.classList.add("done");
-            }
-            else if (task.failed || expired) {
-                div.innerHTML += `<br>Không hoàn thành`;
-                div.classList.add("expired");
-            }
-            else {
-                const btn = document.createElement("button");
-                btn.innerText = "✔️";
-                btn.onclick = () => completeTask(id);
-                div.appendChild(btn);
-            }
-            // 🔥 NÚT XOÁ
+            const btn = document.createElement("button");
+            btn.innerText = "✔️";
+            btn.onclick = () => completeTask(id);
+            div.appendChild(btn);
+
+            // Nút xoá
             const deleteBtn = document.createElement("span");
             deleteBtn.innerText = "🗑 Xoá";
             deleteBtn.className = "delete-btn";
 
             deleteBtn.onclick = async () => {
-                const confirmDelete = confirm("Bạn có muốn xoá bài này không?");
-                
-                if (confirmDelete) {
+                if (confirm("Bạn có muốn xoá bài này không?")) {
                     await deleteDoc(doc(db, "tasks", id));
                 }
             };
 
-            // NÚT XOÁ
             div.appendChild(deleteBtn);
 
-            // NÚT SỬA
+            // Nút sửa
             const editBtn = document.createElement("span");
             editBtn.innerText = "✏️ Sửa";
             editBtn.className = "edit-btn";
