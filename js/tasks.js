@@ -121,7 +121,9 @@ export function loadTasks(renderLeaderboard) {
             const displayName = nameMap[task.assignedTo] || task.assignedTo;
 
             div.innerHTML = `
-                <b>${displayName}</b> - ${deadlineDate.toLocaleDateString("vi-VN")}<br>
+                <span class="task-name ${task.assignedTo}">
+                    ${displayName}
+                </span> - ${deadlineDate.toLocaleDateString("vi-VN")}<br>
             `;
 
             // Nội dung

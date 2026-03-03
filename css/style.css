@@ -5,10 +5,12 @@ body {
 }
 
 nav {
-    background: #2c7be5;
+    background: #e46e88;
     padding: 10px;
     display: flex;
-    gap: 10px;
+    gap: 40px;
+    height: 70px;
+    margin-bottom: 50px;
 }
 
 nav a, nav button {
@@ -17,6 +19,11 @@ nav a, nav button {
     background: none;
     border: none;
     cursor: pointer;
+    font-size: 20px;
+}
+.bi {
+    margin-right: 5px;
+    font-size: 30px;
 }
 
 h1 {
@@ -143,4 +150,19 @@ textarea {
 
 .edit-btn:hover {
     text-decoration: underline;
+}
+/* Tên người làm */
+.task-name {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+/* Cấn Xuân Tùng */
+.task-name.me {
+    color: #e83e8c;  /* xanh */
+}
+
+/* Vương Khánh Ly */
+.task-name.friend {
+    color: #e83e8c;  /* hồng */
 }
