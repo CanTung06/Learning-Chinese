@@ -104,11 +104,11 @@ export function loadTasks(renderLeaderboard) {
             }
 
             // ❗ Chỉ hiển thị task chưa hoàn thành và chưa fail
+            allTasks.push(task);
+
             if (task.completed || task.failed || expired) {
                 return;
             }
-
-            allTasks.push(task);
 
             const div = document.createElement("div");
             div.className = "task";
