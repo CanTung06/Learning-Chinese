@@ -97,11 +97,11 @@ export function loadTasks(renderLeaderboard) {
             const expired = deadlineDate < now;
 
             // AUTO SET FAILED
-            if (expired && !task.completed && !task.failed) {
-                updateDoc(doc(db, "tasks", id), {
-                    failed: true
-                });
-            }
+            // if (expired && !task.completed && !task.failed) {
+            //     updateDoc(doc(db, "tasks", id), {
+            //         failed: true
+            //     });
+            // }
 
             // ❗ Chỉ hiển thị task chưa hoàn thành và chưa fail
             allTasks.push(task);
