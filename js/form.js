@@ -135,7 +135,6 @@ window.addEventListener("load", async () => {
 
             // 🔥 QUAN TRỌNG
             failed: false,       // xoá trạng thái fail
-            completed: false     // reset luôn nếu cần
         });
 
         alert("Đã cập nhật!");
