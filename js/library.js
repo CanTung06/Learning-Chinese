@@ -2,9 +2,7 @@ import { db } from "./firebase.js";
 import { checkAuth } from "./auth.js";
 import {
     collection,
-    onSnapshot,
-    updateDoc,
-    doc
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 checkAuth(() => {
@@ -52,22 +50,6 @@ function loadLibrary() {
             }
             else if (task.failed || expired) {
                 div.innerHTML += `<br>❌ Không hoàn thành`;
-
-                // 🔥 THÊM NÚT KHÔI PHỤC
-                const restoreBtn = document.createElement("button");
-                restoreBtn.innerText = "Khôi phục";
-
-                restoreBtn.onclick = async () => {
-                    await updateDoc(doc(db, "tasks", docSnap.id), {
-                        failed: false,
-                        completed: false
-                    });
-
-                    alert("Đã khôi phục!");
-                };
-
-                div.appendChild(restoreBtn);
-
                 div.classList.add("expired");
             }
             else {

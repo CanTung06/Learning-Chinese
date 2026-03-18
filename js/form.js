@@ -131,10 +131,7 @@ window.addEventListener("load", async () => {
                 deadlineStr.split("/")[0]
             ),
             content,
-            imageUrl,
-
-            // 🔥 QUAN TRỌNG
-            failed: false,       // xoá trạng thái fail
+            imageUrl
         });
 
         alert("Đã cập nhật!");

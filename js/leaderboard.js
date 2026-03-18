@@ -16,7 +16,8 @@ export function renderLeaderboard(tasks) {
             if (task.completed) {
                 streak++;
             }
-            else if (expired) {
+            else if (task.failed || expired) {
+                // ❗ nếu có 1 bài fail → reset toàn bộ
                 streak = 0;
             }
         }
